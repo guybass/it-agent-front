@@ -1,5 +1,5 @@
-import type { Employee, Workflow, Ticket, Flow, Role } from '@/types'
-import { mockEmployees, mockWorkflows, mockTickets, mockFlows, mockRoles } from './mock-data'
+import type { Employee, Workflow, Ticket, Flow, Role, ToolRequest } from '@/types'
+import { mockEmployees, mockWorkflows, mockTickets, mockFlows, mockRoles, mockToolRequests, availableTools } from './mock-data'
 
 // In a real setup this would be an Axios instance hitting VITE_API_BASE_URL.
 // For now, mock API functions that return data with a small delay.
@@ -107,5 +107,31 @@ export const api = {
   async getRole(name: string): Promise<Role | undefined> {
     await delay()
     return mockRoles.find((r) => r.name === name)
+  },
+
+  // Tool Requests
+  async getToolRequests(filters?: { requester?: string }): Promise<ToolRequest[]> {
+    await delay()
+    let result = [...mockToolRequests]
+    if (filters?.requester) result = result.filter((r) => r.requester === filters.requester)
+    return result
+  },
+
+  async createToolRequest(data: Omit<ToolRequest, 'id' | 'status' | 'created_at' | 'updated_at'>): Promise<ToolRequest> {
+    await delay(500)
+    const req: ToolRequest = {
+      ...data,
+      id: `tr-${String(mockToolRequests.length + 1).padStart(3, '0')}`,
+      status: 'pending',
+      created_at: new Date().toISOString(),
+      updated_at: new Date().toISOString(),
+    }
+    mockToolRequests.push(req)
+    return req
+  },
+
+  async getAvailableTools(): Promise<{ name: string; category: string }[]> {
+    await delay()
+    return availableTools
   },
 }

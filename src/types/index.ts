@@ -86,6 +86,19 @@ export interface Role {
   approval_required: string[]
 }
 
+export interface ToolRequest {
+  id: string
+  requester: string
+  employee_email: string
+  employee_name: string
+  tool_from?: string
+  tool_to: string
+  reason: string
+  status: 'pending' | 'approved' | 'denied'
+  created_at: string
+  updated_at: string
+}
+
 export interface AuthUser {
   email: string
   name: string

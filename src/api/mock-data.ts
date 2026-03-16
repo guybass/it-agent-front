@@ -1,4 +1,4 @@
-import type { Employee, Workflow, Ticket, Flow, Role } from '@/types'
+import type { Employee, Workflow, Ticket, Flow, Role, ToolRequest } from '@/types'
 
 export const mockEmployees: Employee[] = [
   {
@@ -339,6 +339,51 @@ export const mockFlows: Flow[] = [
       { name: 'Identity', domains: ['okta'] },
       { name: 'Collaboration', domains: ['google_workspace', 'slack', 'notion', '1password', 'atlassian'] },
     ],
+  },
+]
+
+export const availableTools: { name: string; category: string }[] = [
+  { name: 'Cursor', category: 'IDE' },
+  { name: 'Claude Code', category: 'IDE' },
+  { name: 'VS Code', category: 'IDE' },
+  { name: 'JetBrains', category: 'IDE' },
+  { name: 'GitHub Copilot', category: 'AI Assistant' },
+  { name: 'ChatGPT Team', category: 'AI Assistant' },
+  { name: 'Claude Pro', category: 'AI Assistant' },
+  { name: 'Figma', category: 'Design' },
+  { name: 'Linear', category: 'Project Management' },
+  { name: 'Jira', category: 'Project Management' },
+  { name: 'Notion', category: 'Collaboration' },
+  { name: 'Slack', category: 'Collaboration' },
+  { name: 'Datadog', category: 'Observability' },
+  { name: 'AWS', category: 'Infrastructure' },
+  { name: 'Vercel', category: 'Infrastructure' },
+]
+
+export const mockToolRequests: ToolRequest[] = [
+  {
+    id: 'tr-001',
+    requester: 'sarah@company.com',
+    employee_email: 'jane.smith@company.com',
+    employee_name: 'Jane Smith',
+    tool_from: 'Cursor',
+    tool_to: 'Claude Code',
+    reason: 'Team is migrating to Claude Code for better agentic workflows',
+    status: 'pending',
+    created_at: '2026-03-15T10:00:00Z',
+    updated_at: '2026-03-15T10:00:00Z',
+  },
+  {
+    id: 'tr-002',
+    requester: 'sarah@company.com',
+    employee_email: 'bob.johnson@company.com',
+    employee_name: 'Bob Johnson',
+    tool_from: undefined,
+    tool_to: 'Datadog',
+    reason: 'Needs observability access for GTM analytics dashboards',
+    status: 'approved',
+    created_at: '2026-03-12T14:00:00Z',
+    updated_at: '2026-03-13T09:00:00Z',
   },
 ]
 
