@@ -1,8 +1,9 @@
+import axios from 'axios'
 import type { Employee, Workflow, Ticket, Flow, Role, ToolRequest } from '@/types'
 import { mockEmployees, mockWorkflows, mockTickets, mockFlows, mockRoles, mockToolRequests, availableTools } from './mock-data'
 
-// In a real setup this would be an Axios instance hitting VITE_API_BASE_URL.
-// For now, mock API functions that return data with a small delay.
+const API_BASE = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000'
+const http = axios.create({ baseURL: API_BASE, timeout: 30000 })
 
 const delay = (ms = 300) => new Promise((r) => setTimeout(r, ms))
 
@@ -21,14 +22,27 @@ export const api = {
     return mockEmployees.find((e) => e.email === email)
   },
 
-  async createEmployee(data: Partial<Employee>): Promise<Employee> {
-    await delay(500)
+  async createEmployee(data: Partial<Employee> & { enabled_apps?: string[] }): Promise<Employee> {
+    // Call the real backend to provision the user
+    try {
+      await http.post('/api/onboard', {
+        email: data.email,
+        name: data.name,
+        role: data.role,
+        start_date: data.start_date,
+        manager: data.manager || '',
+        enabled_apps: data.enabled_apps || ['slack', 'github', 'asana', 'trello'],
+      })
+    } catch (err) {
+      console.warn('Backend onboard call failed (using mock):', err)
+    }
+
     const emp: Employee = {
       email: data.email!,
       name: data.name!,
       role: data.role!,
       start_date: data.start_date!,
-      status: 'pending',
+      status: 'onboarding',
       manager: data.manager || '',
       configured_by: data.configured_by || '',
       add_groups: data.add_groups || [],

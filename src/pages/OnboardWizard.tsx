@@ -72,6 +72,7 @@ export function OnboardWizard() {
         configured_by: user!.email,
         add_groups: state.addGroups,
         remove_groups: state.removeGroups,
+        enabled_apps: state.enabledApps,
       })
       navigate(`/employees/${state.email}`)
     } catch {
@@ -212,11 +213,11 @@ export function OnboardWizard() {
               <h3 className="text-sm font-medium text-gray-700 mb-2">Apps</h3>
               <div className="flex flex-wrap gap-2">
                 {(state.selectedFlow === 'custom'
-                  ? ['okta', 'google_workspace', 'slack', 'notion', 'atlassian', '1password', 'github', 'linear', 'figma', 'hubspot', 'vercel', 'datadog', 'cloudflare', 'aws', 'mongodb', 'sentry']
-                  : [...new Set([...allDomains, 'github', 'linear', 'figma', 'hubspot', 'vercel', 'datadog', 'cloudflare', 'aws', 'mongodb', 'sentry'])]
+                  ? ['slack', 'github', 'asana', 'trello', 'figma', 'hubspot']
+                  : [...new Set([...allDomains, 'asana', 'trello', 'figma', 'hubspot'])]
                 ).map((domain) => {
                   const enabled = state.enabledApps.includes(domain)
-                  const isRequired = domain === 'okta'
+                  const isRequired = false
                   return (
                     <button
                       key={domain}

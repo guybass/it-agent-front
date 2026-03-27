@@ -44,7 +44,6 @@ export function ManagerDashboard() {
   }
 
   const pendingToolReqs = toolRequests.filter((r) => r.status === 'pending')
-  const approvedToolReqs = toolRequests.filter((r) => r.status === 'approved')
 
   return (
     <div className="space-y-8">
